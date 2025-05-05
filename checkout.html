@@ -52,6 +52,16 @@
       margin-top: 1rem;
       font-weight: bold;
     }
+    /* Responsive Anpassungen */
+    @media (max-width: 480px) {
+      main {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      button {
+        padding: 0.5rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -71,7 +81,7 @@
     <div id="message"></div>
   </main>
   <script>
-    // Beim Laden der Seite werden die Bestelldetails aus dem localStorage ausgelesen
+    // Bestelldetails aus dem localStorage lesen und in das Hidden-Feld einfügen
     window.onload = function() {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       let orderDetails = "";
@@ -84,33 +94,21 @@
       document.getElementById("orderDetails").value = orderDetails;
     };
 
-    // Beim Absenden des Formulars wird ein mailto-Link aufgebaut und der Standard-Mailclient geöffnet
+    // Beim Formular-Submit wird der mailto-Link generiert und der E-Mail-Client geöffnet
     document.getElementById("checkout-form").addEventListener("submit", function(event) {
       event.preventDefault();
-      
       const operatingSystem = document.getElementById("operatingSystem").value;
       const orderDetails = document.getElementById("orderDetails").value;
       
-      // Erstelle den Inhalt für die E-Mail
       let emailBody = "Betriebssystem: " + operatingSystem + "\n\nBestellung:\n" + orderDetails;
-      
-      // URL-Encodierung
       emailBody = encodeURIComponent(emailBody);
       const subject = encodeURIComponent("TGRAFSoft Bestellung");
+      const emailAddress = "bestellungen@tgrafsoft.de"; // Ziel-E-Mail-Adresse
       
-      // Zieladresse – ersetze diese Adresse ggf. durch die gewünschte Empfängeradresse
-      const emailAddress = "tgrafsoft@gmail.com";
-      
-      // Erstelle den mailto-Link
       const mailtoLink = "mailto:" + emailAddress + "?subject=" + subject + "&body=" + emailBody;
-      
-      // Öffnet den E-Mail-Client des Benutzers
       window.location.href = mailtoLink;
       
-      // Optional: Leert den Warenkorb
       localStorage.removeItem("cart");
-      
-      // Zeigt eine kurze Bestätigungsnachricht an
       document.getElementById("message").textContent = "Bitte überprüfen Sie Ihren E-Mail-Client, um die Bestellung abzuschließen.";
     });
   </script>
