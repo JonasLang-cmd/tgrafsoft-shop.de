@@ -5,56 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TGRAFSoft Shop</title>
   <style>
-    /* Grundlegendes Styling */
+    /* Grundlegendes Reset und Box-Sizing */
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: #f2f2f2;
     }
-    
     header {
       background: #4a90e2;
       color: white;
       padding: 1rem;
       text-align: center;
     }
-    
     nav ul {
       list-style: none;
       padding: 0;
       margin: 0;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
     }
-    
     nav ul li {
-      margin: 0 1rem;
+      margin: 0.5rem;
     }
-    
     nav ul li a {
       color: white;
       text-decoration: none;
     }
-    
     main {
       display: flex;
       max-width: 1200px;
       margin: 2rem auto;
       padding: 0 1rem;
+      gap: 1rem;
     }
-    
-    /* Produktbereich */
-    .products {
+    section.products {
       flex: 2;
     }
-    
     .product-list {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1rem;
     }
-    
     .product {
       background: white;
       padding: 1rem;
@@ -62,11 +58,9 @@
       border-radius: 4px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
-    
     .product h3 {
       margin: 0 0 0.5rem 0;
     }
-    
     .product button {
       background: #4a90e2;
       color: white;
@@ -75,27 +69,21 @@
       border-radius: 3px;
       cursor: pointer;
     }
-    
-    /* Warenkorb-Bereich */
     .cart {
       flex: 1;
-      margin-left: 2rem;
       background: white;
       padding: 1rem;
       border: 1px solid #ddd;
       border-radius: 4px;
       height: fit-content;
     }
-    
     .cart h2 {
       border-bottom: 1px solid #ddd;
       padding-bottom: 0.5rem;
     }
-    
     #cart-items p {
       margin: 0.5rem 0;
     }
-    
     #checkoutBtn {
       background: #28a745;
       color: white;
@@ -106,6 +94,16 @@
       width: 100%;
       margin-top: 1rem;
     }
+    /* Responsive Anpassungen */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+      }
+      .cart {
+        margin-top: 1rem;
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
@@ -113,7 +111,9 @@
     <h1>TGRAFSoft Shop</h1>
     <nav>
       <ul>
-   
+        <li><a href="#">Startseite</a></li>
+        <li><a href="#">Produkte</a></li>
+        <li><a href="#">Kontakt</a></li>
       </ul>
     </nav>
   </header>
@@ -121,40 +121,33 @@
     <section class="products">
       <h2>Produkte</h2>
       <div class="product-list">
+       <!-- Produkt 1 -->
+       <div class="product">
+        <h3>Unsre App</h3>
+        <p>Auf unserer App können sie alle Infos zu uns Entnehmen. <br>Nur für Android.<br> Lizenzschlüssel: alsk-2783-ikol-0964</p>
+        <p>Preis: 0€</p>
+        <button onclick="addToCart('App', 0)">In den Warenkorb</button>
+      </div>
 
 
 
-        <!-- Produkt 1 -->
-        <div class="product">
-          <h3>Unsre App</h3>
-          <p>Auf unserer App können sie alle Infos zu uns Entnehmen. <br>Nur für Android.<br> Lizenzschlüssel: alsk-2783-ikol-0964</p>
-          <p>Preis: 0€</p>
-          <button onclick="addToCart('App', 0)">In den Warenkorb</button>
-        </div>
+      <!-- Produkt 2 -->
+      <div class="product">
+        <h3>Snake</h3>
+        <p>Ein klassisches Snake Spiel. <br> Nur für Windows. </p>
+        <p>Preis: 0€</p>
+        <button onclick="addToCart('Snake', 0)">In den Warenkorb</button>
+      </div>
 
 
 
-        <!-- Produkt 2 -->
-        <div class="product">
-          <h3>Snake</h3>
-          <p>Ein klassisches Snake Spiel. <br> Nur für Windows. </p>
-          <p>Preis: 0€</p>
-          <button onclick="addToCart('Snake', 0)">In den Warenkorb</button>
-        </div>
-
-
-
-        <!-- Produkt 3 -->
-        <div class="product">
-          <h3>My Web</h3>
-          <p>Ein IE änlicher Browser <br>Nur für Windows.</p>
-          <p>Preis: 0€</p>
-          <button onclick="addToCart('My Web', 0)">In den Warenkorb</button>
-        </div>
-
-
-
-
+      <!-- Produkt 3 -->
+      <div class="product">
+        <h3>My Web</h3>
+        <p>Ein IE änlicher Browser <br>Nur für Windows.</p>
+        <p>Preis: 0€</p>
+        <button onclick="addToCart('My Web', 0)">In den Warenkorb</button>
+      </div>
 
       </div>
     </section>
@@ -187,9 +180,9 @@
       let total = 0;
       cart.forEach((item) => {
         total += item.price;
-        const p = document.createElement('p');
-        p.textContent = item.productName + ' - ' + item.price + '€';
-        cartItemsDiv.appendChild(p);
+        const itemElem = document.createElement('p');
+        itemElem.textContent = item.productName + ' - ' + item.price + '€';
+        cartItemsDiv.appendChild(itemElem);
       });
       // Zeigt den Gesamtpreis an
       const totalElem = document.createElement('p');
@@ -197,7 +190,7 @@
       cartItemsDiv.appendChild(totalElem);
     }
 
-    // Beim Klick auf "Zur Kasse": Warenkorb speichern und zur Checkout-Seite weiterleiten
+    // Warenkorb speichern und zur Checkout-Seite weiterleiten
     function checkout() {
       if (cart.length === 0) {
         alert('Ihr Warenkorb ist leer!');
@@ -209,3 +202,34 @@
   </script>
 </body>
 </html>
+
+
+
+        <!-- Produkt 1 -->
+        <div class="product">
+            <h3>Unsre App</h3>
+            <p>Auf unserer App können sie alle Infos zu uns Entnehmen. <br>Nur für Android.<br> Lizenzschlüssel: alsk-2783-ikol-0964</p>
+            <p>Preis: 0€</p>
+            <button onclick="addToCart('App', 0)">In den Warenkorb</button>
+          </div>
+  
+  
+  
+          <!-- Produkt 2 -->
+          <div class="product">
+            <h3>Snake</h3>
+            <p>Ein klassisches Snake Spiel. <br> Nur für Windows. </p>
+            <p>Preis: 0€</p>
+            <button onclick="addToCart('Snake', 0)">In den Warenkorb</button>
+          </div>
+  
+  
+  
+          <!-- Produkt 3 -->
+          <div class="product">
+            <h3>My Web</h3>
+            <p>Ein IE änlicher Browser <br>Nur für Windows.</p>
+            <p>Preis: 0€</p>
+            <button onclick="addToCart('My Web', 0)">In den Warenkorb</button>
+          </div>
+  
