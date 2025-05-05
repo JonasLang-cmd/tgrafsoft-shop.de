@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - TGRAFSoft</title>
+  <style>
+    /* Basis-Styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    main {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 5px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin: 1rem 0 0.5rem 0;
+    }
+    input[type="text"],
+    textarea {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+    button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Checkout - TGRAFSoft</h1>
+  </header>
+  <main>
+    <form id="checkout-form">
+      <label for="operatingSystem">Betriebssystem:</label>
+      <input type="text" id="operatingSystem" name="operatingSystem" placeholder="z.B. Windows 10, macOS, Linux" required>
+      
+      <!-- Hidden-Feld für die Bestelldetails -->
+      <input type="hidden" id="orderDetails" name="orderDetails">
+      
+      <button type="submit">Bestellung absenden</button>
+    </form>
+    <div id="message"></div>
+  </main>
+  <script>
+    // Beim Laden der Seite werden die Bestelldetails aus dem localStorage ausgelesen
+    window.onload = function() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let orderDetails = "";
+      let total = 0;
+      cart.forEach(item => {
+        orderDetails += item.productName + " - " + item.price + "€\n";
+        total += item.price;
+      });
+      orderDetails += "\nGesamt: " + total + "€";
+      document.getElementById("orderDetails").value = orderDetails;
+    };
+
+    // Beim Absenden des Formulars wird ein mailto-Link aufgebaut und der Standard-Mailclient geöffnet
+    document.getElementById("checkout-form").addEventListener("submit", function(event) {
+      event.preventDefault();
+      
+      const operatingSystem = document.getElementById("operatingSystem").value;
+      const orderDetails = document.getElementById("orderDetails").value;
+      
+      // Erstelle den Inhalt für die E-Mail
+      let emailBody = "Betriebssystem: " + operatingSystem + "\n\nBestellung:\n" + orderDetails;
+      
+      // URL-Encodierung
+      emailBody = encodeURIComponent(emailBody);
+      const subject = encodeURIComponent("TGRAFSoft Bestellung");
+      
+      // Zieladresse – ersetze diese Adresse ggf. durch die gewünschte Empfängeradresse
+      const emailAddress = "tgrafsoft@gmail.com";
+      
+      // Erstelle den mailto-Link
+      const mailtoLink = "mailto:" + emailAddress + "?subject=" + subject + "&body=" + emailBody;
+      
+      // Öffnet den E-Mail-Client des Benutzers
+      window.location.href = mailtoLink;
+      
+      // Optional: Leert den Warenkorb
+      localStorage.removeItem("cart");
+      
+      // Zeigt eine kurze Bestätigungsnachricht an
+      document.getElementById("message").textContent = "Bitte überprüfen Sie Ihren E-Mail-Client, um die Bestellung abzuschließen.";
+    });
+  </script>
+</body>
+</html>

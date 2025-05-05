@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGRAFSoft Shop</title>
+  <style>
+    /* Grundlegendes Styling */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+    
+    header {
+      background: #4a90e2;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+    }
+    
+    nav ul li {
+      margin: 0 1rem;
+    }
+    
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+    }
+    
+    main {
+      display: flex;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    
+    /* Produktbereich */
+    .products {
+      flex: 2;
+    }
+    
+    .product-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    
+    .product {
+      background: white;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .product h3 {
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .product button {
+      background: #4a90e2;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    /* Warenkorb-Bereich */
+    .cart {
+      flex: 1;
+      margin-left: 2rem;
+      background: white;
+      padding: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      height: fit-content;
+    }
+    
+    .cart h2 {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+    
+    #cart-items p {
+      margin: 0.5rem 0;
+    }
+    
+    #checkoutBtn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 3px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TGRAFSoft Shop</h1>
+    <nav>
+      <ul>
+   
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="products">
+      <h2>Produkte</h2>
+      <div class="product-list">
+
+
+
+        <!-- Produkt 1 -->
+        <div class="product">
+          <h3>Unsre App</h3>
+          <p>Auf unserer App können sie alle Infos zu uns Entnehmen. <br>Nur für Android.<br> Lizenzschlüssel: alsk-2783-ikol-0964</p>
+          <p>Preis: 0€</p>
+          <button onclick="addToCart('App', 0)">In den Warenkorb</button>
+        </div>
+
+
+
+        <!-- Produkt 2 -->
+        <div class="product">
+          <h3>Snake</h3>
+          <p>Ein klassisches Snake Spiel. <br> Nur für Windows. </p>
+          <p>Preis: 0€</p>
+          <button onclick="addToCart('Snake', 0)">In den Warenkorb</button>
+        </div>
+
+
+
+        <!-- Produkt 3 -->
+        <div class="product">
+          <h3>My Web</h3>
+          <p>Ein IE änlicher Browser <br>Nur für Windows.</p>
+          <p>Preis: 0€</p>
+          <button onclick="addToCart('My Web', 0)">In den Warenkorb</button>
+        </div>
+
+
+
+
+
+      </div>
+    </section>
+    <aside class="cart">
+      <h2>Warenkorb</h2>
+      <div id="cart-items">
+        <p>Keine Produkte im Warenkorb.</p>
+      </div>
+      <button id="checkoutBtn" onclick="checkout()">Zur Kasse</button>
+    </aside>
+  </main>
+  <script>
+    // Array zur Speicherung der Produkte im Warenkorb
+    let cart = [];
+
+    // Funktion, um ein Produkt zum Warenkorb hinzuzufügen
+    function addToCart(productName, price) {
+      cart.push({ productName, price });
+      updateCart();
+    }
+
+    // Aktualisiert die Anzeige des Warenkorbs
+    function updateCart() {
+      const cartItemsDiv = document.getElementById('cart-items');
+      cartItemsDiv.innerHTML = '';
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<p>Keine Produkte im Warenkorb.</p>';
+        return;
+      }
+      let total = 0;
+      cart.forEach((item) => {
+        total += item.price;
+        const p = document.createElement('p');
+        p.textContent = item.productName + ' - ' + item.price + '€';
+        cartItemsDiv.appendChild(p);
+      });
+      // Zeigt den Gesamtpreis an
+      const totalElem = document.createElement('p');
+      totalElem.innerHTML = '<strong>Gesamt: ' + total + '€</strong>';
+      cartItemsDiv.appendChild(totalElem);
+    }
+
+    // Beim Klick auf "Zur Kasse": Warenkorb speichern und zur Checkout-Seite weiterleiten
+    function checkout() {
+      if (cart.length === 0) {
+        alert('Ihr Warenkorb ist leer!');
+        return;
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      window.location.href = "checkout.html";
+    }
+  </script>
+</body>
+</html>
