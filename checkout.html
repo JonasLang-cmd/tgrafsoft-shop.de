@@ -103,7 +103,7 @@
       let emailBody = "Betriebssystem: " + operatingSystem + "\n\nBestellung:\n" + orderDetails;
       emailBody = encodeURIComponent(emailBody);
       const subject = encodeURIComponent("TGRAFSoft Bestellung");
-      const emailAddress = "bestellungen@tgrafsoft.de"; // Ziel-E-Mail-Adresse
+      const emailAddress = "tgrafsoft@gmail.com"; // Ziel-E-Mail-Adresse
       
       const mailtoLink = "mailto:" + emailAddress + "?subject=" + subject + "&body=" + emailBody;
       window.location.href = mailtoLink;
